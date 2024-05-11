@@ -1,0 +1,9 @@
+{
+  "name": "posts",
+  "version": "1.0.0",
+  "description": "Microservice from the \"if community\" project to manage posts",
+  "main": "index.js",
+  "repository": "https://github.com/IF-Community/if-community-posts-.git",
+  "author": "if community",
+  "license": "MIT"
+}
