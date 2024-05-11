@@ -6,6 +6,11 @@
   "repository": "https://github.com/IF-Community/if-community-posts-.git",
   "author": "if community",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon --exec ts-node ./src/server.ts",
+    "migration:generate": "typeorm-ts-node-commonjs -d ./src/database/data-source.ts migration:generate ./src/database/migrations/default",
+    "migration:run": "typeorm-ts-node-commonjs -d ./src/database/data-source.ts migration:run"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
