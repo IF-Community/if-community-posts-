@@ -78,10 +78,9 @@ export class UsersController {
             );
         }
 
-        const remove = await this.userRepository.softRemove({
+        return await this.userRepository.softRemove({
             id: id
         });
-        return remove;
     }
 
 }
