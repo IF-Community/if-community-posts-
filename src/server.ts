@@ -5,7 +5,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { errorMiddleware } from './middlewares/error/error.middlewares';
-import { userRouter } from "./routers";
+import { categoryRouter, userRouter } from "./routers";
 
 
 AppDataSource.initialize().then(() => {
@@ -16,6 +16,7 @@ AppDataSource.initialize().then(() => {
     app.use(cors());
     
     app.use(userRouter);
+    app.use(categoryRouter);
     app.use(errorMiddleware);
 
     const PORT_API = Number(process.env.PORT_API ?? '3000');
