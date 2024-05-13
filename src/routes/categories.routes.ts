@@ -7,8 +7,10 @@ const categoriesController = new CategorieController();
 
 const categoriesRoutes = Router();
 
+
 categoriesRoutes.post('/categories', async (req: Request, res: Response) => {
     const { body } = req;
+  
     const category = await categoriesController.create(body);
     return res.status(StatusCodes.CREATED).json(category);
 });

@@ -6,10 +6,11 @@ const userController = new UsersController();
 
 const userRoutes = Router();
 
+
 userRoutes.post('/users', async (req: Request, res: Response) => {
     const { body } = req;
     const user = await userController.create(body);
-    return res.status(StatusCodes.CREATED).json(user);
+    return res.status(StatusCodes.CREATED).json(body);
 });
 
 userRoutes.get('/users', async (req: Request, res: Response) => {

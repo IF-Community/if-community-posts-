@@ -7,6 +7,9 @@ import { errorMiddleware } from './middlewares/error/error.middlewares';
 import { userRoutes } from './routes/user.routes';
 import { categoriesRoutes } from './routes/categories.routes';
 import { postRoutes } from './routes/post.routes';
+import { votePost } from './routes/vote.routes';
+import { postWithVotesRoutes } from './routes/post-votes.routes';
+import { postCategoriesRoutes } from './routes/post-categories.routes';
 
 
 AppDataSource.initialize().then(() => {
@@ -16,10 +19,13 @@ AppDataSource.initialize().then(() => {
     app.use(helmet());
     app.use(cors());
     
-    app.use(userRoutes);
     app.use(categoriesRoutes);
     app.use(postRoutes);
-    
+    app.use(userRoutes);
+    app.use(votePost);
+    app.use(postWithVotesRoutes);
+    app.use(postCategoriesRoutes)
+
     app.use(errorMiddleware);
 
     const PORT_API = Number(process.env.PORT_API ?? '3000');
