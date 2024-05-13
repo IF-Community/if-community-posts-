@@ -6,6 +6,7 @@ import AppDataSource from './database/data-source';
 import { errorMiddleware } from './middlewares/error/error.middlewares';
 import { userRoutes } from './routes/user.routes';
 import { categoriesRoutes } from './routes/categories.routes';
+import { postRoutes } from './routes/post.routes';
 
 
 AppDataSource.initialize().then(() => {
@@ -17,6 +18,7 @@ AppDataSource.initialize().then(() => {
     
     app.use(userRoutes);
     app.use(categoriesRoutes);
+    app.use(postRoutes);
     
     app.use(errorMiddleware);
 

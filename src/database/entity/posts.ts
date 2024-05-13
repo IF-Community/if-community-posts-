@@ -30,7 +30,7 @@ export class Post extends Base {
 
     @OneToMany(
         () => PostCategory, 
-        (posts_categories) => posts_categories.post
+        (posts_categories) => posts_categories.post,
     )
     posts_categories: PostCategory[];
 
