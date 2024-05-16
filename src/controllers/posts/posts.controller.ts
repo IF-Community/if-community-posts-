@@ -13,9 +13,7 @@ export class PostController {
     private userController = new UsersController();
 
     async create(postData: PostRequest): Promise<Post> {
-
-        await this.userController.findOne(postData.userId);
-
+        await this.userController.findOne(postData.userId);   
         return await this.postRepository.save(postData);
     }
 
@@ -39,6 +37,7 @@ export class PostController {
                 deletedAt: post.deletedAt,
                 title: post.title,
                 content: post.content,
+                totalUpvotes: post.totalUpvotes === null ? 0 : post.totalUpvotes,
                 userId: post.userId,
                 posts_categories: post.posts_categories.map(pc => ({
                     category: {
@@ -81,6 +80,7 @@ export class PostController {
             deletedAt: post.deletedAt,
             title: post.title,
             content: post.content,
+            totalUpvotes: post.totalUpvotes === null ? 0 : post.totalUpvotes,
             userId: post.userId,
             posts_categories: post.posts_categories.map(pc => ({
                 category: {

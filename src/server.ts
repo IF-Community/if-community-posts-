@@ -4,7 +4,7 @@ import helmet from "helmet";
 import cors from "cors";
 import AppDataSource from './database/data-source';
 import { errorMiddleware } from './middlewares/error/error.middlewares';
-import { categoryRouter, postRouter, userRouter } from './routes';
+import { categoryRouter, postRouter, userRouter, votePostRouter } from './routes';
 
 
 AppDataSource.initialize().then(() => {
@@ -17,6 +17,7 @@ AppDataSource.initialize().then(() => {
     app.use(userRouter);
     app.use(categoryRouter);
     app.use(postRouter);
+    app.use(votePostRouter);+
 
     app.use(errorMiddleware)
 
