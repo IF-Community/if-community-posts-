@@ -1,10 +1,10 @@
 import 'express-async-errors';
 import express from "express";
-import { router } from "./routes";
 import helmet from "helmet";
 import cors from "cors";
 import AppDataSource from './database/data-source';
 import { errorMiddleware } from './middlewares/error/error.middlewares';
+import { userRouter } from './routes';
 
 
 AppDataSource.initialize().then(() => {
@@ -14,7 +14,7 @@ AppDataSource.initialize().then(() => {
     app.use(helmet());
     app.use(cors());
     
-    app.use(router);
+    app.use(userRouter);
     app.use(errorMiddleware)
 
     const PORT_API = Number(process.env.PORT_API ?? '3000');
