@@ -9,6 +9,7 @@ export class Posts1715476294199 implements MigrationInterface {
                 title VARCHAR(200),
                 user_id int8,
                 content TEXT,
+                total_upvotes int8,
                 created_at timestamp DEFAULT NOW()::TIMESTAMP,
                 updated_at timestamp,
                 deleted_at timestamp

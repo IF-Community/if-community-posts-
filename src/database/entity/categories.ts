@@ -10,11 +10,7 @@ import { PostCategory } from './posts_categories';
 @Entity('categories')
 export class Category extends Base {
 
-    @Column({
-        name:'name',
-        type: 'varchar',
-        length: 200,
-    })
+    @Column({ name:'name', type: 'varchar', length: 200 })
     name: string;
 
     @OneToMany(

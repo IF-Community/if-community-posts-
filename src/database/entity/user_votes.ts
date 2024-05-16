@@ -10,40 +10,20 @@ import { User } from "./users"
 
 @Entity('users_votes')
 export class UserVote extends Base {
-    @Column({ 
-        name: 'upvote', 
-        type: 'boolean', 
-        nullable: true 
-    })
+    @Column({ name: 'upvote', type: 'boolean', nullable: true })
     upvote: boolean | null;
 
-    @Column({ 
-        name: 'user_id', 
-        type: 'int8' 
-    })
+    @Column({ name: 'user_id', type: 'int8' })
     userId: number;
 
-    @Column({ 
-        name: 'post_id', 
-        type: 'int8' 
-    })
+    @Column({ name: 'post_id', type: 'int8' })
     postId: number;
 
-    @ManyToOne(
-        () => User, 
-        (user) => user.votes
-    )
-    @JoinColumn({ 
-        name: 'user_id' 
-    })
+    @ManyToOne( () => User, (user) => user.votes )
+    @JoinColumn({ name: 'user_id' })
     user: User;
 
-    @ManyToOne(
-        () => Post, 
-        (post) => post.votes
-    )
-    @JoinColumn({ 
-        name: 'post_id' 
-    })
+    @ManyToOne( () => Post, (post) => post.votes)
+    @JoinColumn({ name: 'post_id' })
     post: Post;
 }
