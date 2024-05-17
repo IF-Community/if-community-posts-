@@ -11,17 +11,41 @@ postRouter.post('/posts', async (req: Request, res: Response) => {
     return res.status(StatusCodes.CREATED).json(newPost);
 });
 
+
+postRouter.get('/posts/categories', async (req: Request, res: Response) => {
+    const pageNumber = Number(req.query.pageNumber as string) || 1;
+    const pageSize = Number(req.query.pageSize as string) || 10;
+
+    const { tags } = req.body;
+
+    const posts = await postController.findByCategories(tags, pageNumber, pageSize);
+    return res.status(StatusCodes.OK).json(posts);
+});
+
 postRouter.get('/posts/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     const posts = await postController.findOne(+id);
     return res.status(StatusCodes.OK).json(posts);
 });
 
-postRouter.get('/posts', async (req: Request, res: Response) => {
+postRouter.get('/posts/users/:id', async (req: Request, res: Response) => {
     const pageNumber = Number(req.query.pageNumber as string) || 1;
     const pageSize = Number(req.query.pageSize as string) || 10;
 
-    const posts = await postController.find(pageNumber, pageSize);
+    const { id } = req.params;
+
+    const posts = await postController.findByUser(+id, pageNumber, pageSize);
+    return res.status(StatusCodes.OK).json(posts);
+});
+
+
+postRouter.get('/posts', async (req: Request, res: Response) => {
+    const pageNumber = Number(req.query.pageNumber as string) || 1;
+    const pageSize = Number(req.query.pageSize as string) || 10;
+    const popularity = req.query.popularity === 'true';
+
+
+    const posts = await postController.find(pageNumber, pageSize, popularity);
     return res.status(StatusCodes.OK).json(posts);
 });
 
