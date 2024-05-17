@@ -7,16 +7,28 @@ import PostRequest from './types/post';
 import UsersController from '../users/users.controller';
 import { Category } from '../../database/entity/categories';
 import { User } from '../../database/entity/users';
+import { CategorieController } from '../categories/categories.controllers';
 
 
 export class PostController {
     private postRepository = AppDataSource.getRepository(Post);
     private postCategoryRepository = AppDataSource.getRepository(PostCategory);
     private userController = new UsersController();
+    private categoryController = new CategorieController();
 
     async create(postData: PostRequest): Promise<Post> {
-        await this.userController.findOne(postData.userId);   
-        return await this.postRepository.save(postData);
+        await this.userController.findOne(postData.userId);
+
+        const newPost = await this.postRepository.save(postData);
+
+        if(postData.categories){
+            this.categoryController.createPostCategory(
+                newPost.id,
+                postData.categories
+            );
+        }
+
+        return newPost;
     }
 
     async find(pageNumber: number, pageSize: number, ordering: boolean) {
@@ -149,7 +161,6 @@ export class PostController {
         return { results, totalPages };
     }
     
-    
     async findOne(id: number) {
         const post = await this.postRepository.createQueryBuilder('post')
         .leftJoinAndSelect('post.user', 'user')
@@ -192,7 +203,7 @@ export class PostController {
         return mappedPost;
     }
 
-    async update(id: number, postData: Partial<PostRequest> ): Promise<Post> {
+    async update(id: number, postData: Partial<PostRequest> ) {
         const { title, content } = postData;
 
         const post = await this.postRepository.findOne({
@@ -210,9 +221,18 @@ export class PostController {
 
         post.content = content ?? post.content;
 
+        if(postData.categories){
+            this.categoryController.createPostCategory(
+                post.id,
+                postData.categories
+            );
+        }
+
         post.updatedAt = new Date();
 
-        return await this.postRepository.save(post);
+        const updatePost = await this.postRepository.save(post);
+
+        return this.findOne(updatePost.id)
     }
 
     async remove(id: number): Promise<{ delete: boolean }> {

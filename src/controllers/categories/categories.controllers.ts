@@ -26,6 +26,46 @@ export class CategorieController {
         return await this.categoryRepository.save(categoryData);
     }
 
+    async createPostCategory(postId: number ,categories: Array<{name: string, remove?: boolean}>) {
+        for (const category of categories) {
+            const existCategory = await this.categoryRepository.findOne({
+                where: { name: category.name }
+            });
+
+            if (existCategory) {
+                if(category.remove){
+                    await this.categoryPostRepository.softDelete({
+                        categoryId: existCategory.id,
+                    });
+                } else {
+                    const existPostCategory = await this.categoryPostRepository.exists({
+                        where: {
+                            postId: postId,
+                            categoryId: existCategory.id,
+                        }
+                    });
+
+                    if(!existPostCategory){
+                        await this.categoryPostRepository.save({
+                            postId: postId,
+                            categoryId: existCategory.id,
+                        })
+                    }
+                }
+            } else {
+
+                const categorie = new Category();
+                categorie.name = category.name; 
+                const newCategorie = await this.categoryRepository.save(categorie);
+
+                await this.categoryPostRepository.save({
+                    postId: postId,
+                    categoryId: newCategorie.id,
+                })
+            }
+        }
+    }
+
     async find(pageNumber: number, pageSize: number): Promise<{ totalPages: number, results: Category[] }> {
 
         const [categories, totalCount] = await this.categoryRepository.findAndCount({
