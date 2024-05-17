@@ -12,20 +12,16 @@ import { UserVote } from "./user_votes";
 
 @Entity('posts')
 export class Post extends Base {
-    @Column({ 
-        type: 'varchar', 
-        length: 200 
-    })
+    @Column({ type: 'varchar', length: 200 })
     title: string;
 
-    @Column({ 
-        type: 'text' 
-    })
+    @Column({ type: 'text' })
     content: string;
 
-    @Column({ 
-        name: 'user_id' 
-    })
+    @Column({ name: 'total_upvotes', default: 0 })
+    totalUpvotes: number;
+
+    @Column({ name: 'user_id' })
     userId: number;
 
     @OneToMany(
@@ -34,16 +30,10 @@ export class Post extends Base {
     )
     posts_categories: PostCategory[];
 
-    @ManyToOne(
-        () => User, 
-        (user) => user.posts
-    )
+    @ManyToOne( () => User,  (user) => user.posts )
     @JoinColumn({ name: 'user_id' })
     user: User;
 
-    @OneToMany(
-        () => UserVote, 
-        (votes) => votes.post
-    )
+    @OneToMany( () => UserVote, (votes) => votes.post )
     votes: UserVote[];
 }

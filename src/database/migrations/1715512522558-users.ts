@@ -5,8 +5,7 @@ export class Users1715512522558 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
             CREATE TABLE IF NOT EXISTS users (
-                id SERIAL PRIMARY KEY,
-                communit_id INT UNIQUE,
+                "id" int UNIQUE PRIMARY KEY,
                 name VARCHAR(200),
                 created_at timestamp DEFAULT NOW()::TIMESTAMP,
                 updated_at timestamp,
