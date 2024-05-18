@@ -1,12 +1,14 @@
 import { Router, Request, Response } from 'express';
 import UsersController from "../controllers/users/users.controller";
 import { StatusCodes } from 'http-status-codes';
+import validate from '../middlewares/validation/validationMiddleware';
+import { requestUserSchema, requestUserUpdateSchema } from '../schemas';
 
 const userRouter = Router();
 
 const userController = new UsersController();
 
-userRouter.post('/users', async (req: Request, res: Response) => {
+userRouter.post('/users', validate(requestUserSchema) ,async (req: Request, res: Response) => {
     const { body } = req;
     const newUser = await userController.create(body);
     return res.status(StatusCodes.CREATED).json(newUser);
@@ -26,7 +28,7 @@ userRouter.get('/users/:communitId', async (req: Request, res: Response) => {
     return res.status(StatusCodes.OK).json(user);
 });
 
-userRouter.patch('/users/:communitId', async (req: Request, res: Response) => {
+userRouter.patch('/users/:communitId', validate(requestUserUpdateSchema),async (req: Request, res: Response) => {
     const { communitId } = req.params;
     const { body } = req;
     const user = await userController.update(+communitId, body);

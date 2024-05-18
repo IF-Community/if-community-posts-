@@ -1,12 +1,14 @@
 import { Router, Request, Response } from 'express';
 import { CategorieController } from '../controllers/categories/categories.controllers';
 import { StatusCodes } from 'http-status-codes';
+import validate from '../middlewares/validation/validationMiddleware';
+import { categoryRequestSchema } from '../schemas';
 
 const categoryRouter = Router();
 
 const categoryController = new CategorieController();
 
-categoryRouter.post('/categories', async (req: Request, res: Response) => {
+categoryRouter.post('/categories', validate(categoryRequestSchema), async (req: Request, res: Response) => {
     const { body } = req;
     const newCategory = await categoryController.create(body);
     return res.status(StatusCodes.CREATED).json(newCategory);
@@ -26,7 +28,7 @@ categoryRouter.get('/categories/:id', async (req: Request, res: Response) => {
     return res.status(StatusCodes.OK).json(category);
 });
 
-categoryRouter.patch('/categories/:id', async (req: Request, res: Response) => {
+categoryRouter.patch('/categories/:id', validate(categoryRequestSchema),async (req: Request, res: Response) => {
     const { id } = req.params;
     const { body } = req;
     const category = await categoryController.update(+id, body);
