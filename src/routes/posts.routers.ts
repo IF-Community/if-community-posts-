@@ -1,18 +1,20 @@
 import { Router, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { PostController } from '../controllers/posts/posts.controller';
+import validate from '../middlewares/validation/validationMiddleware';
+import { postRequestSchema, tagsSchema } from '../schemas';
 
 const postRouter = Router();
 const postController = new PostController();
 
-postRouter.post('/posts', async (req: Request, res: Response) => {
+postRouter.post('/posts', validate(postRequestSchema),async (req: Request, res: Response) => {
     const { body } = req;
     const newPost = await postController.create(body);
     return res.status(StatusCodes.CREATED).json(newPost);
 });
 
 
-postRouter.get('/posts/categories', async (req: Request, res: Response) => {
+postRouter.get('/posts/categories', validate(tagsSchema),async (req: Request, res: Response) => {
     const pageNumber = Number(req.query.pageNumber as string) || 1;
     const pageSize = Number(req.query.pageSize as string) || 10;
 
@@ -49,7 +51,7 @@ postRouter.get('/posts', async (req: Request, res: Response) => {
     return res.status(StatusCodes.OK).json(posts);
 });
 
-postRouter.patch('/posts/:id', async (req: Request, res: Response) => {
+postRouter.patch('/posts/:id', validate(postRequestSchema), async (req: Request, res: Response) => {
     const { id } = req.params;
     const { body } = req;
     const  post = await postController.update(+id, body);

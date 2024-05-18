@@ -1,12 +1,14 @@
 import { Router, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { VoteController } from '../controllers/vote/vote.controller';
+import validate from '../middlewares/validation/validationMiddleware';
+import { userVoteRequestSchema } from '../schemas';
 
 const votesController = new VoteController();
 
 const votePostRouter = Router();
 
-votePostRouter.post('/votes', async (req: Request, res: Response) => {
+votePostRouter.post('/votes', validate(userVoteRequestSchema),async (req: Request, res: Response) => {
     const { body } = req;
     const vote = await votesController.create_update(body);
     return res.status(StatusCodes.CREATED).json(vote);
@@ -19,7 +21,7 @@ votePostRouter.get('/votes', async (req: Request, res: Response) => {
 });
 
 
-votePostRouter.patch('/votes', async (req: Request, res: Response) => {
+votePostRouter.patch('/votes', validate(userVoteRequestSchema),async (req: Request, res: Response) => {
     const { body } = req;
     const vote = await votesController.create_update(body);
     return res.status(StatusCodes.OK).json(vote);
