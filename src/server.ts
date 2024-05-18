@@ -4,6 +4,7 @@ import helmet from "helmet";
 import cors from "cors";
 import AppDataSource from './database/data-source';
 import { errorMiddleware } from './middlewares/error/error.middlewares';
+import authenticate from './middlewares/authenticate/authenticate';
 import { categoryRouter, postRouter, userRouter, votePostRouter } from './routes';
 
 
@@ -13,13 +14,14 @@ AppDataSource.initialize().then(() => {
     app.use(express.json());
     app.use(helmet());
     app.use(cors());
+    app.use(authenticate);
     
     app.use(userRouter);
     app.use(categoryRouter);
     app.use(postRouter);
-    app.use(votePostRouter);+
+    app.use(votePostRouter);
 
-    app.use(errorMiddleware)
+    app.use(errorMiddleware);
 
     const PORT_API = Number(process.env.PORT_API ?? '3000');
 
