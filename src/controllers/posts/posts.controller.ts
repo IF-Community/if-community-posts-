@@ -74,6 +74,46 @@ export class PostController {
         return { totalPages, results: mappedPosts }
     }
 
+    async findByQuery(query: string, pageNumber: number, pageSize: number) {
+        const skip = (pageNumber - 1) * pageSize;
+        const take = pageSize;
+
+        const [posts, totalCount] = await this.postRepository.createQueryBuilder('post')
+            .leftJoinAndSelect('post.user', 'user')
+            .leftJoinAndSelect('post.posts_categories', 'posts_categories')
+            .leftJoinAndSelect('posts_categories.category', 'category')
+            .where('post.title LIKE :query OR post.content LIKE :query', { query: `%${query}%` })
+            .orderBy('post.createdAt', 'DESC')
+            .skip(skip)
+            .take(take)
+            .getManyAndCount();
+    
+        const mappedPosts = posts.map(post => ({
+            id: post.id,
+            createdAt: post.createdAt,
+            updatedAt: post.updatedAt,
+            deletedAt: post.deletedAt,
+            title: post.title,
+            content: post.content,
+            totalUpvotes: post.totalUpvotes === null ? 0 : post.totalUpvotes,
+            posts_categories: post.posts_categories.map(pc => ({
+                category: {
+                    id: pc.category.id,
+                    name: pc.category.name
+                }
+            })),
+            user: {
+                id: post.user.id,
+                createdAt: post.user.createdAt,
+                updatedAt: post.user.updatedAt,
+                name: post.user.name
+            }
+        }));
+
+        const totalPages = Math.ceil(totalCount / pageSize);
+        return { totalPages, results: mappedPosts }
+    }
+
     async findByUser(id: number,pageNumber: number, pageSize: number) {
         const skip = (pageNumber - 1) * pageSize;
         const take = pageSize;

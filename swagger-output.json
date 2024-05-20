@@ -255,7 +255,7 @@
         "parameters": [
           {
             "name": "id",
-            "in": "query",
+            "in": "path",
             "required": true,
             "type": "number",
             "description": "The user ID that was registered in the system"
@@ -322,7 +322,7 @@
         "parameters": [
           {
             "name": "id",
-            "in": "query",
+            "in": "path",
             "required": true,
             "type": "number",
             "description": "The user ID that was registered in the system"
@@ -450,7 +450,7 @@
         "parameters": [
           {
             "name": "id",
-            "in": "query",
+            "in": "path",
             "required": true,
             "type": "number",
             "description": "The user ID that was registered in the system"
@@ -742,7 +742,7 @@
         "parameters": [
           {
             "name": "id",
-            "in": "query",
+            "in": "path",
             "required": true,
             "type": "number",
             "description": "The category ID"
@@ -840,7 +840,7 @@
         "parameters": [
           {
             "name": "id",
-            "in": "query",
+            "in": "path",
             "required": true,
             "type": "number",
             "description": "The category ID"
@@ -968,7 +968,7 @@
         "parameters": [
           {
             "name": "id",
-            "in": "query",
+            "in": "path",
             "required": true,
             "type": "number",
             "description": "The category ID"
@@ -1546,7 +1546,7 @@
         "parameters": [
           {
             "name": "id",
-            "in": "query",
+            "in": "path",
             "required": true,
             "type": "number",
             "description": "The post ID"
@@ -1689,7 +1689,7 @@
         "parameters": [
           {
             "name": "id",
-            "in": "query",
+            "in": "path",
             "required": true,
             "type": "number",
             "description": "The post ID"
@@ -1832,7 +1832,7 @@
         "parameters": [
           {
             "name": "id",
-            "in": "query",
+            "in": "path",
             "required": true,
             "type": "number",
             "description": "The post ID"
@@ -1918,7 +1918,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "number",
+            "description": "The post ID"
           },
           {
             "name": "pageNumber",
@@ -2008,6 +2009,156 @@
                         "type": "array",
                         "example": [],
                         "items": {}
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Token inválido. Forneça um token de autenticação válido."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "500": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/posts/search/{search}": {
+      "get": {
+        "tags": [
+          "Posts/Search"
+        ],
+        "description": "lists all posts by Search string (search by title and content)",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The post search parameters"
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "Number informing which page the search should return\n (pattern 1)",
+            "type": "number"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Number informing the number of elements per page\n (pattern 10)",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "totalPages": {
+                  "type": "number",
+                  "example": 1
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "example": 4
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2024-05-20T01:23:03.842Z"
+                      },
+                      "updatedAt": {},
+                      "deletedAt": {},
+                      "title": {
+                        "type": "string",
+                        "example": "alguma coisa aqui mano"
+                      },
+                      "content": {
+                        "type": "string",
+                        "example": "tecnologia e analise de sistemas"
+                      },
+                      "totalUpvotes": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "posts_categories": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "category": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "number",
+                                  "example": 3
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "example": "Programação"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "user": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "example": 1
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2024-05-19T11:01:59.858Z"
+                          },
+                          "updatedAt": {},
+                          "name": {
+                            "type": "string",
+                            "example": "joão doria"
+                          }
+                        }
                       }
                     }
                   }

@@ -4,7 +4,6 @@ import helmet from "helmet";
 import cors from "cors";
 import AppDataSource from './database/data-source';
 import { errorMiddleware } from './middlewares/error/error.middlewares';
-import authenticate from './middlewares/authenticate/authenticate';
 import { categoryRouter, postRouter, userRouter, votePostRouter } from './routes';
 
 import swaggerUi from "swagger-ui-express";
