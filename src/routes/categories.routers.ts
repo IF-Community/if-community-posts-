@@ -122,7 +122,7 @@ categoryRouter.get('/categories/:id', authenticate, async (req: Request, res: Re
         #swagger.description = 'search for a category by ID'
 
         #swagger.parameters['id'] = {
-            in: 'query',
+            in: 'path',
             description: 'The category ID',
             type: 'number'
         }
@@ -171,7 +171,7 @@ categoryRouter.patch('/categories/:id', authenticate, validate(categoryRequestSc
         #swagger.description = 'update category specified by ID'
 
         #swagger.parameters['id'] = {
-            in: 'query',
+            in: 'path',
             description: 'The category ID',
             type: 'number'
         }
@@ -235,7 +235,7 @@ categoryRouter.delete('/categories/:id', authenticate, async (req: Request, res:
         #swagger.description = 'removes a category from the specified id'
 
         #swagger.parameters['id'] = {
-            in: 'query',
+            in: 'path',
             description: 'The category ID',
             type: 'number'
         }

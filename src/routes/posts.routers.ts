@@ -265,7 +265,7 @@ postRouter.get('/posts/:id', authenticate, async (req: Request, res: Response) =
         #swagger.description = 'search post for ID'
         
         #swagger.parameters['id'] = {
-            in: 'query',
+            in: 'path',
             description: 'The post ID',
             type: 'number'
         }
@@ -333,10 +333,15 @@ postRouter.get('/posts/:id', authenticate, async (req: Request, res: Response) =
 });
 
 postRouter.get('/posts/users/:id', authenticate, async (req: Request, res: Response) => {
-    
     /*
         #swagger.tags = ['Posts/Users']
         #swagger.description = 'lists all posts by user ID registered in the system'
+
+        #swagger.parameters['id'] = {
+            in: 'path',
+            description: 'The post ID',
+            type: 'number'
+        }
 
         #swagger.responses[200] = {
             schema: { 
@@ -416,6 +421,95 @@ postRouter.get('/posts/users/:id', authenticate, async (req: Request, res: Respo
 });
 
 
+postRouter.get('/posts/search/:search', authenticate, async (req: Request, res: Response) => {
+    /*
+        #swagger.tags = ['Posts/Search']
+        #swagger.description = 'lists all posts by Search string (search by title and content)'
+
+        #swagger.parameters['search'] = {
+            in: 'path',
+            description: 'The post search parameters',
+            type: 'string'
+        }
+
+        #swagger.responses[200] = {
+            schema: {
+                "totalPages": 1,
+                "results": [
+                    {
+                        "id": 4,
+                        "createdAt": "2024-05-20T01:23:03.842Z",
+                        "updatedAt": null,
+                        "deletedAt": null,
+                        "title": "alguma coisa aqui mano",
+                        "content": "tecnologia e analise de sistemas",
+                        "totalUpvotes": 0,
+                        "posts_categories": [
+                            {
+                                "category": {
+                                    "id": 2,
+                                    "name": "Tecnologia"
+                                }
+                            },
+                            {
+                                "category": {
+                                    "id": 3,
+                                    "name": "Programação"
+                                }
+                            }
+                        ],
+                        "user": {
+                            "id": 1,
+                            "createdAt": "2024-05-19T11:01:59.858Z",
+                            "updatedAt": null,
+                            "name": "joão doria"
+                        }
+                    }
+                ]
+            }
+        }
+
+
+        #swagger.responses[500] = {
+            schema: { 
+                message: "Internal Server Error"
+            }
+        }
+        
+        #swagger.responses[401] = {
+            schema: { 
+                message: "Token inválido. Forneça um token de autenticação válido."
+            }
+        }
+
+        #swagger.security = [{
+            "apiKeyAuth": []
+        }] 
+
+
+        #swagger.parameters['pageNumber'] = {
+            in: 'query',
+            description: 'Number informing which page the search should return\n (pattern 1)',
+            type: 'number'
+        }
+
+        #swagger.parameters['pageSize'] = {
+            in: 'query',
+            description: 'Number informing the number of elements per page\n (pattern 10)',
+            type: 'number'
+        }
+    */
+
+    const pageNumber = Number(req.query.pageNumber as string) || 1;
+    const pageSize = Number(req.query.pageSize as string) || 10;
+
+    const { search } = req.params;
+
+    const posts = await postController.findByQuery(search, pageNumber, pageSize);
+    return res.status(StatusCodes.OK).json(posts);
+});
+
+
 postRouter.patch('/posts/:id', authenticate, validate(postRequestSchema), async (req: Request, res: Response) => {
     
     /*
@@ -423,7 +517,7 @@ postRouter.patch('/posts/:id', authenticate, validate(postRequestSchema), async 
         #swagger.description = 'search for a post ID'
 
         #swagger.parameters['id'] = {
-            in: 'query',
+            in: 'path',
             description: 'The post ID',
             type: 'number'
         }
@@ -497,7 +591,7 @@ postRouter.delete('/posts/:id', authenticate, async (req: Request, res: Response
         #swagger.description = 'removes a post from the specified id'
 
         #swagger.parameters['id'] = {
-            in: 'query',
+            in: 'path',
             description: 'The post ID',
             type: 'number'
         }

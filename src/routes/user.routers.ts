@@ -134,7 +134,7 @@ userRouter.get('/users/:id', authenticate,async (req: Request, res: Response) =>
         #swagger.description = 'search for a user by ID' 
 
         #swagger.parameters['id'] = {
-            in: 'query',
+            in: 'path',
             description: 'The user ID that was registered in the system',
             type: 'number'
         }
@@ -174,7 +174,7 @@ userRouter.patch('/users/:id', authenticate, validate(requestUserUpdateSchema),a
         #swagger.description = 'update user specified by ID'
 
         #swagger.parameters['id'] = {
-            in: 'query',
+            in: 'path',
             description: 'The user ID that was registered in the system',
             type: 'number'
         }
@@ -240,7 +240,7 @@ userRouter.delete('/users/:id', authenticate, async (req: Request, res: Response
         #swagger.description = 'removes a user from the specified id'
 
         #swagger.parameters['id'] = {
-            in: 'query',
+            in: 'path',
             description: 'The user ID that was registered in the system',
             type: 'number'
         }
