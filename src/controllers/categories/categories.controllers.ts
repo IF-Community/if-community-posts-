@@ -86,7 +86,7 @@ export class CategorieController {
     
         if (!category) {
             throw new ApiError(
-                'Categoria não encontrada',
+                'Categoria com esse id não está cadastrado no sistema',
                 StatusCodes.NOT_FOUND            
             );
         }
@@ -114,7 +114,7 @@ export class CategorieController {
 
             if (!categoryToDelete) {
                 throw new ApiError(
-                    'Categoria não encontrado para exclusão',
+                    'Categoria com esse id não está cadastrado no sistema',
                     StatusCodes.CONFLICT
                 );
             }
