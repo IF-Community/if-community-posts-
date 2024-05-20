@@ -68,7 +68,7 @@ class UsersController {
         if (!userToDelete) {
             throw new ApiError(
                 'Usuário não encontrado para exclusão',
-                StatusCodes.CONFLICT
+                StatusCodes.NOT_FOUND
             );
         }
 

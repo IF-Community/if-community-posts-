@@ -56,7 +56,6 @@ export class PostController {
             title: post.title,
             content: post.content,
             totalUpvotes: post.totalUpvotes === null ? 0 : post.totalUpvotes,
-            userId: post.userId,
             posts_categories: post.posts_categories.map(pc => ({
                 category: {
                     id: pc.category.id,
@@ -158,7 +157,7 @@ export class PostController {
     
         const totalPages = Math.ceil(totalCount.total / pageSize);
     
-        return { results, totalPages };
+        return {totalPages ,results };
     }
     
     async findOne(id: number) {
@@ -241,8 +240,8 @@ export class PostController {
 
         if(!postToDelete){
             throw new ApiError(
-                'Categoria não encontrado para exclusão',
-                StatusCodes.CONFLICT
+                'Post não encontrado para exclusão',
+                StatusCodes.NOT_FOUND
             );
         }
         
