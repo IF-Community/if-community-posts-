@@ -82,7 +82,7 @@ export class PostController {
             .leftJoinAndSelect('post.user', 'user')
             .leftJoinAndSelect('post.posts_categories', 'posts_categories')
             .leftJoinAndSelect('posts_categories.category', 'category')
-            .where('post.title LIKE :query OR post.content LIKE :query', { query: `%${query}%` })
+            .where('LOWER(post.title) LIKE LOWER(:query) OR LOWER(post.content) LIKE LOWER(:query)', { query: `%${query.toLowerCase()}%` })
             .orderBy('post.createdAt', 'DESC')
             .skip(skip)
             .take(take)
