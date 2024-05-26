@@ -66,7 +66,7 @@ DATABASE=posts
 SYNCHRONIZE=false
 LOGGING=false
 PORT_API=3000
-API_TOKEN=d6f8e5b2a1c3f9e7d0b5c2a4e6f8a7d3
+API_KEY=d6f8e5b2a1c3f9e7d0b5c2a4e6f8a7d3
 ```
 **variaveis que você pode alterar:**
 - **PORT:** 
@@ -81,7 +81,7 @@ API_TOKEN=d6f8e5b2a1c3f9e7d0b5c2a4e6f8a7d3
     - Esta variável controla se a saída de log do TypeORM (se estiver sendo usado) está ativada. Está configurado como false, o que significa que os logs do TypeORM estão desativados.
 - **PORT_API:**  
     - Este é o número da porta onde o servidor da API será executado. Está configurado como 3000, mas pode ser ajustado conforme necessário para evitar conflitos com outros serviços em execução na máquina.
-- **API_TOKEN**
+- **API_KEY**
     - Token de permissão para utilização das rotas. 
 
 ### 5. Crie o banco de dados
@@ -92,12 +92,19 @@ Crie o banco [Postgres](https://www.postgresql.org/) com o nome utilizado na var
 yarn migration:run
 ```
 
-### 6. Inicie o servidor de desenvolvimento
+### 6. Gerando Documentação das rotas com swagger
+
+```bash
+yarn run swagger
+```
+
+### 7. Inicie o servidor de desenvolvimento
 Para iniciar o servidor de desenvolvimento, execute o seguinte comando:
 
 ```bash
 yarn dev
 ```
-### 7. Todas as rotas
+
+### 8. Todas as rotas
 
 Você pode ver e testar todas as rotas acessando o swagger da aplicação em `/api-docs`
