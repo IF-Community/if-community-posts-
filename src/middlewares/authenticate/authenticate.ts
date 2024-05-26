@@ -5,7 +5,6 @@ import dotenv from 'dotenv';
 import { ApiError } from '../../helpers/api-error';
 dotenv.config();
 
-
 const authenticate = (req: Request, res: Response, next: NextFunction) => {
     const apiToken = req.header("api-token");
 
