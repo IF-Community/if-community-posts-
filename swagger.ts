@@ -14,7 +14,7 @@ const doc = {
     apiKeyAuth: {
       type: 'apiKey',
       in: 'header',
-      name: 'api-token',
+      name: 'api-key',
       description: 'An API token is a unique access key that grants permission to interact with the API, ensuring security and control over the operations performed.'
     }
   },

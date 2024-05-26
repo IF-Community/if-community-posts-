@@ -6,9 +6,9 @@ import { ApiError } from '../../helpers/api-error';
 dotenv.config();
 
 const authenticate = (req: Request, res: Response, next: NextFunction) => {
-    const apiToken = req.header("api-token");
+    const apiKey = req.header("api-key");
 
-    if (process.env.API_TOKEN !== apiToken) {
+    if (process.env.API_KEY !== apiKey) {
         throw new ApiError(
             'Token inválido. Forneça um token de autenticação válido.',
             StatusCodes.UNAUTHORIZED
