@@ -173,4 +173,7 @@ dist
 # and uncomment the following lines
 # .pnp.*
 
+# swagger auto-gen
+./swagger-output.json
+
 # End of https://www.toptal.com/developers/gitignore/api/node,git,yarn
