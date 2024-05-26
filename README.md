@@ -92,12 +92,19 @@ Crie o banco [Postgres](https://www.postgresql.org/) com o nome utilizado na var
 yarn migration:run
 ```
 
-### 6. Inicie o servidor de desenvolvimento
+### 6. Gerando Documentação das rotas com swagger
+
+```bash
+yarn run swagger
+```
+
+### 7. Inicie o servidor de desenvolvimento
 Para iniciar o servidor de desenvolvimento, execute o seguinte comando:
 
 ```bash
 yarn dev
 ```
-### 7. Todas as rotas
+
+### 8. Todas as rotas
 
 Você pode ver e testar todas as rotas acessando o swagger da aplicação em `/api-docs`
