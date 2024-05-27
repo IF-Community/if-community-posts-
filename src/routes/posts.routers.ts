@@ -4,6 +4,7 @@ import { PostController } from '../controllers/posts/posts.controller';
 import validate from '../middlewares/validation/validationMiddleware';
 import { postRequestSchema, tagsSchema } from '../schemas';
 import authenticate from '../middlewares/authenticate/authenticate';
+import { ApiError } from '../helpers/api-error';
 
 const postRouter = Router();
 const postController = new PostController();
@@ -169,18 +170,16 @@ postRouter.get('/posts', authenticate, async (req: Request, res: Response) => {
 });
 
 
-postRouter.get('/posts/categories', authenticate, validate(tagsSchema),async (req: Request, res: Response) => {
+postRouter.get('/posts/categories', authenticate,async (req: Request, res: Response) => {
     /*
         #swagger.tags = ['Posts/Categories']
         #swagger.description = 'lists posts by categories'
 
-        #swagger.parameters['body'] = {
-            in: 'body',
-            description: 'User data.',
+        #swagger.parameters['tags'] = {
+            in: 'query',
             required: true,
-            schema: {
-                tags: ["Tecnologia", "IFRN"]
-            }
+            description: 'The list of tags (separate by \",\" )',
+            type: 'string'
         }
         
         #swagger.responses[201] = {
@@ -253,7 +252,13 @@ postRouter.get('/posts/categories', authenticate, validate(tagsSchema),async (re
     const pageNumber = Number(req.query.pageNumber as string) || 1;
     const pageSize = Number(req.query.pageSize as string) || 10;
 
-    const { tags } = req.body;
+
+    if(!req.query.tags){
+        throw new ApiError('Você precisa informar a query com as tags',
+        StatusCodes.BAD_REQUEST);
+    }
+
+    const tags = typeof req.query.tags === 'string' ? req.query.tags.split(',') : [];
 
     const posts = await postController.findByCategories(tags, pageNumber, pageSize);
     return res.status(StatusCodes.OK).json(posts);
