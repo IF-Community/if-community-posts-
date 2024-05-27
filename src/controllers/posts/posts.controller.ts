@@ -195,8 +195,9 @@ export class PostController {
             totalCountQuery.getRawOne()
         ]);
     
-        const totalPages = Math.ceil(totalCount.total / pageSize);
-    
+        const total = totalCount?.total ?? 0;
+        const totalPages = Math.ceil(total / pageSize);
+
         return {totalPages ,results };
     }
     
