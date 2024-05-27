@@ -4,19 +4,20 @@ import { VoteController } from '../controllers/vote/vote.controller';
 import validate from '../middlewares/validation/validationMiddleware';
 import { userVoteRequestSchema } from '../schemas';
 import authenticate from '../middlewares/authenticate/authenticate';
+import { ApiError } from '../helpers/api-error';
 
 const votesController = new VoteController();
 
 const votePostRouter = Router();
 
-votePostRouter.post('/votes', authenticate, validate(userVoteRequestSchema),async (req: Request, res: Response) => {
+votePostRouter.post('/votes', authenticate ,async (req: Request, res: Response) => {
     
     /*
         #swagger.tags = ['Votes (Upvotes)']
         #swagger.description = 'adding interation(upvote) user to microservice'
 
         #swagger.parameters['body'] = {
-            in: 'body',
+            in: 'query',
             description: 'User data.',
             required: true,
             schema: {
@@ -72,16 +73,17 @@ votePostRouter.get('/votes', authenticate, async (req: Request, res: Response) =
         #swagger.tags = ['Votes (Upvotes)']
         #swagger.description = 'search for a user by ID and a post ID'
 
-        #swagger.parameters['body'] = {
-            in: 'body',
-            description: 'User data.',
+        #swagger.parameters['userId'] = {
+            in: 'query',
             required: true,
-            schema: {
-                "userId": 1,
-		        "postId": 1
-            }
+            type: 'number'
         }
 
+        #swagger.parameters['postId'] = {
+            in: 'query',
+            required: true,
+            type: 'number'
+        }
 
         #swagger.responses[200] = {
             schema: { 
@@ -125,8 +127,25 @@ votePostRouter.get('/votes', authenticate, async (req: Request, res: Response) =
     
     */
 
-    const { body } = req;
-    const vote = await votesController.findOne(body);
+    const { userId, postId } = req.query;
+
+    if (!userId || !postId) {
+        throw new ApiError('Você precisa informar a query de userId e postId', StatusCodes.BAD_REQUEST);
+    }
+    
+    const userIdNumber = Number(userId);
+    const postIdNumber = Number(postId);
+    
+    if (isNaN(userIdNumber) || isNaN(postIdNumber)) {
+        throw new ApiError('userId e postId precisam ser números válidos', StatusCodes.BAD_REQUEST);
+    }
+    
+    const searchData = {
+        userId: userIdNumber,
+        postId: postIdNumber,
+    };
+
+    const vote = await votesController.findOne(searchData);
     return res.status(StatusCodes.OK).json(vote);
 });
 
@@ -189,17 +208,19 @@ votePostRouter.patch('/votes', authenticate, validate(userVoteRequestSchema),asy
 
 votePostRouter.delete('/votes', authenticate, async (req: Request, res: Response) => {
     /*
-        // #swagger.tags = ['Votes (Upvotes)']
+        #swagger.tags = ['Votes (Upvotes)']
         #swagger.description = 'removes a vote from the specified user id and post id'
         
-        #swagger.parameters['body'] = {
-            in: 'body',
-            description: 'User data.',
+        #swagger.parameters['userId'] = {
+            in: 'query',
             required: true,
-            schema: {
-                "userId": 1,
-                "postId": 1,
-            }
+            type: 'number'
+        }
+
+        #swagger.parameters['postId'] = {
+            in: 'query',
+            required: true,
+            type: 'number'
         }
 
         #swagger.responses[200] = {
@@ -238,10 +259,26 @@ votePostRouter.delete('/votes', authenticate, async (req: Request, res: Response
 
     */
 
-    const { body } = req;
-    const vote = await votesController.remove(body);
+    const { userId, postId } = req.query;
+
+    if (!userId || !postId) {
+        throw new ApiError('Você precisa informar a query de userId e postId', StatusCodes.BAD_REQUEST);
+    }
+    
+    const userIdNumber = Number(userId);
+    const postIdNumber = Number(postId);
+    
+    if (isNaN(userIdNumber) || isNaN(postIdNumber)) {
+        throw new ApiError('userId e postId precisam ser números válidos', StatusCodes.BAD_REQUEST);
+    }
+    
+    const searchData = {
+        userId: userIdNumber,
+        postId: postIdNumber,
+    };
+
+    const vote = await votesController.remove(searchData);
     return res.status(StatusCodes.OK).json(vote);
 });
-
 
 export { votePostRouter };
