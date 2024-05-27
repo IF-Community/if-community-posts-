@@ -84,7 +84,7 @@ export class VoteController {
     }
 
 
-    async remove(voteData: UserVoteRequest): Promise<{delete: boolean}> {
+    async remove(voteData: UserVoteRequest | { userId: number, postId: number,}): Promise<{delete: boolean}> {
 
         const vote = await this.findOne(voteData);
 
