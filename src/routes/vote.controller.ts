@@ -17,8 +17,8 @@ votePostRouter.post('/votes', authenticate ,async (req: Request, res: Response) 
         #swagger.description = 'adding interation(upvote) user to microservice'
 
         #swagger.parameters['body'] = {
-            in: 'query',
-            description: 'User data.',
+            in: 'body',
+            description: 'vote data',
             required: true,
             schema: {
                 "userId": 1,

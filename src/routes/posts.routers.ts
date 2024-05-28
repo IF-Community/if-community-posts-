@@ -98,7 +98,7 @@ postRouter.get('/posts', authenticate, async (req: Request, res: Response) => {
             }
         }
 
-        #swagger.responses[201] = {
+        #swagger.responses[200] = {
             schema: { 
                 totalPages: 1,
                 results: [{
