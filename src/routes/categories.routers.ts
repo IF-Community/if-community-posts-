@@ -9,7 +9,7 @@ const categoryRouter = Router();
 
 const categorieServices = new CategorieServices();
 
-categoryRouter.post('/categories', authenticate, validate(categoryRequestSchema), async (req: Request, res: Response) => {
+categoryRouter.post('/posts/category', authenticate, validate(categoryRequestSchema), async (req: Request, res: Response) => {
     /*
         #swagger.tags = ['Categories']
         #swagger.description = 'adding new category to microservice'
@@ -60,7 +60,7 @@ categoryRouter.post('/categories', authenticate, validate(categoryRequestSchema)
     return res.status(StatusCodes.CREATED).json(newCategory);
 });
 
-categoryRouter.get('/categories', authenticate, async (req: Request, res: Response) => {
+categoryRouter.get('/posts/category', authenticate, async (req: Request, res: Response) => {
     /*
         #swagger.tags = ['Categories']
         #swagger.description = 'lists all categories registered in the system'
@@ -116,7 +116,7 @@ categoryRouter.get('/categories', authenticate, async (req: Request, res: Respon
     return res.status(StatusCodes.OK).json(categorys);
 });
 
-categoryRouter.get('/categories/:id', authenticate, async (req: Request, res: Response) => {
+categoryRouter.get('/posts/category/:id', authenticate, async (req: Request, res: Response) => {
     /*
         #swagger.tags = ['Categories']
         #swagger.description = 'search for a category by ID'
@@ -165,7 +165,7 @@ categoryRouter.get('/categories/:id', authenticate, async (req: Request, res: Re
     return res.status(StatusCodes.OK).json(category);
 });
 
-categoryRouter.patch('/categories/:id', authenticate, validate(categoryRequestSchema),async (req: Request, res: Response) => {
+categoryRouter.patch('/posts/category/:id', authenticate, validate(categoryRequestSchema),async (req: Request, res: Response) => {
     /*
         #swagger.tags = ['Categories']
         #swagger.description = 'update category specified by ID'
@@ -229,7 +229,7 @@ categoryRouter.patch('/categories/:id', authenticate, validate(categoryRequestSc
     return res.status(StatusCodes.OK).json(category);
 });
 
-categoryRouter.delete('/categories/:id', authenticate, async (req: Request, res: Response) => {
+categoryRouter.delete('/posts/category/:id', authenticate, async (req: Request, res: Response) => {
     /* 
         #swagger.tags = ['Categories']
         #swagger.description = 'removes a category from the specified id'

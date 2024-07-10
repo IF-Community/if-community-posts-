@@ -10,7 +10,7 @@ const userRouter = Router();
 const usersServices = new UsersServices();
 
 
-userRouter.post('/users', authenticate,validate(requestUserSchema) ,async (req: Request, res: Response) => {
+userRouter.post('/posts/users', authenticate,validate(requestUserSchema) ,async (req: Request, res: Response) => {
     /*
         #swagger.tags = ['Users']
         #swagger.description = 'adding new user to microservice' 
@@ -69,7 +69,7 @@ userRouter.post('/users', authenticate,validate(requestUserSchema) ,async (req: 
     return res.status(StatusCodes.CREATED).json(newUser);
 });
 
-userRouter.get('/users', authenticate,async (req: Request, res: Response) => {
+userRouter.get('/posts/users', authenticate,async (req: Request, res: Response) => {
     /* 
         #swagger.tags = ['Users']
         #swagger.description = 'lists all users registered in the system'
@@ -128,7 +128,7 @@ userRouter.get('/users', authenticate,async (req: Request, res: Response) => {
     return res.status(StatusCodes.OK).json(users);
 });
 
-userRouter.get('/users/:id', authenticate,async (req: Request, res: Response) => {
+userRouter.get('/posts/users/:id', authenticate,async (req: Request, res: Response) => {
     /*  
         #swagger.tags = ['Users']
         #swagger.description = 'search for a user by ID' 
@@ -167,7 +167,7 @@ userRouter.get('/users/:id', authenticate,async (req: Request, res: Response) =>
     return res.status(StatusCodes.OK).json(user);
 });
 
-userRouter.patch('/users/:id', authenticate, validate(requestUserUpdateSchema),async (req: Request, res: Response) => {
+userRouter.patch('/posts/users/:id', authenticate, validate(requestUserUpdateSchema),async (req: Request, res: Response) => {
 
     /*
         #swagger.tags = ['Users']
@@ -234,7 +234,7 @@ userRouter.patch('/users/:id', authenticate, validate(requestUserUpdateSchema),a
     return res.status(StatusCodes.OK).json(user);
 });
 
-userRouter.delete('/users/:id', authenticate, async (req: Request, res: Response) => {
+userRouter.delete('/posts/users/:id', authenticate, async (req: Request, res: Response) => {
     /*
         #swagger.tags = ['Users']
         #swagger.description = 'removes a user from the specified id'

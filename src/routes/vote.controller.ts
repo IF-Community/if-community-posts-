@@ -10,7 +10,7 @@ const voteServices = new VoteServices();
 
 const votePostRouter = Router();
 
-votePostRouter.post('/votes', authenticate ,async (req: Request, res: Response) => {
+votePostRouter.post('/posts/votes', authenticate ,async (req: Request, res: Response) => {
     
     /*
         #swagger.tags = ['Votes (Upvotes)']
@@ -67,7 +67,7 @@ votePostRouter.post('/votes', authenticate ,async (req: Request, res: Response) 
     return res.status(StatusCodes.CREATED).json(vote);
 });
 
-votePostRouter.get('/votes', authenticate, async (req: Request, res: Response) => {
+votePostRouter.get('/posts/votes', authenticate, async (req: Request, res: Response) => {
     
     /*
         #swagger.tags = ['Votes (Upvotes)']
@@ -150,7 +150,7 @@ votePostRouter.get('/votes', authenticate, async (req: Request, res: Response) =
 });
 
 
-votePostRouter.patch('/votes', authenticate, validate(userVoteRequestSchema),async (req: Request, res: Response) => {
+votePostRouter.patch('/posts/votes', authenticate, validate(userVoteRequestSchema),async (req: Request, res: Response) => {
     /*
         #swagger.tags = ['Votes (Upvotes)']
         #swagger.description = 'adding interation(upvote) user to microservice'
@@ -206,7 +206,7 @@ votePostRouter.patch('/votes', authenticate, validate(userVoteRequestSchema),asy
     return res.status(StatusCodes.OK).json(vote);
 });
 
-votePostRouter.delete('/votes', authenticate, async (req: Request, res: Response) => {
+votePostRouter.delete('/posts/votes', authenticate, async (req: Request, res: Response) => {
     /*
         #swagger.tags = ['Votes (Upvotes)']
         #swagger.description = 'removes a vote from the specified user id and post id'
