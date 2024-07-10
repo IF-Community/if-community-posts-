@@ -5,7 +5,6 @@ import { ApiError } from "../../helpers/api-error";
 import { categoryRequest } from "./types/category";
 import { PostCategory } from "../../database/entity/posts_categories";
 
-
 export class CategorieServices {
     private categoryRepository = AppDataSource.getRepository(Category);
     private categoryPostRepository = AppDataSource.getRepository(PostCategory);
@@ -125,7 +124,23 @@ export class CategorieServices {
         });
 
         return {delete: true}
+    }
 
+    async findWithPostCount(pageSize: number): Promise<{ category_id: number; category_name: string; post_count: number }[]> {
+        const categoriesWithPostCount = await this.categoryRepository
+            .createQueryBuilder("c")
+            .leftJoin(PostCategory, "pc", "c.id = pc.category_id")
+            .select("c.id", "id")
+            .addSelect("c.name", "name")
+            .addSelect("COUNT(pc.post_id)", "post_count")
+            .where("c.deleted_at IS NULL")
+            .groupBy("c.id")
+            .addGroupBy("c.name")
+            .orderBy("post_count", "DESC")
+            .limit(pageSize)
+            .getRawMany();
+    
+        return categoriesWithPostCount;
     }
 
 }
