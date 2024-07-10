@@ -116,6 +116,55 @@ categoryRouter.get('/posts/category', authenticate, async (req: Request, res: Re
     return res.status(StatusCodes.OK).json(categorys);
 });
 
+categoryRouter.get('/posts/category/most-used', authenticate, async (req: Request, res: Response) => {
+
+    /*
+        #swagger.tags = ['Categories']
+        #swagger.description = 'lists a number of categories given'
+        #swagger.responses[200] = {
+            schema: [
+                {
+                    "id": 1,
+                    "name": "Programação",
+                    "post_count": "5"
+                },
+                {
+                    "id": 2,
+                    "name": "tecnologia",
+                    "post_count": "2"
+                },
+            ]
+        }
+
+        #swagger.responses[500] = {
+            schema: { 
+                message: "Internal Server Error"
+            }
+        }
+        
+        #swagger.responses[401] = {
+            schema: { 
+                message: "Token inválido. Forneça um token de autenticação válido."
+            }
+        }
+
+        #swagger.security = [{
+            "apiKeyAuth": []
+        }] 
+
+        #swagger.parameters['pageSize'] = {
+            in: 'query',
+            description: 'Number informing the number of elements per page\n (pattern 10)',
+            type: 'number'
+        } 
+    */
+   
+    const pageSize = Number(req.query.pageSize) || 10;
+
+    const categorys = await categorieServices.findWithPostCount(pageSize);
+    return res.status(StatusCodes.OK).json(categorys);
+});
+
 categoryRouter.get('/posts/category/:id', authenticate, async (req: Request, res: Response) => {
     /*
         #swagger.tags = ['Categories']
