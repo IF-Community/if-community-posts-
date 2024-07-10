@@ -5,7 +5,7 @@ import { UserVoteRequest } from "./types/userVote";
 import { ApiError } from "../../helpers/api-error";
 import { Post } from "../../database/entity/posts";
 
-export class VoteController {
+export class VoteServices {
     private voteRepository = AppDataSource.getRepository(UserVote);
     private postRepository = AppDataSource.getRepository(Post);
 

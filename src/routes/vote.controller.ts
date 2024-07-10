@@ -1,12 +1,12 @@
 import { Router, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { VoteController } from '../controllers/vote/vote.controller';
+import { VoteServices } from '../services/vote/vote.services';
 import validate from '../middlewares/validation/validationMiddleware';
 import { userVoteRequestSchema } from '../schemas';
 import authenticate from '../middlewares/authenticate/authenticate';
 import { ApiError } from '../helpers/api-error';
 
-const votesController = new VoteController();
+const voteServices = new VoteServices();
 
 const votePostRouter = Router();
 
@@ -63,7 +63,7 @@ votePostRouter.post('/votes', authenticate ,async (req: Request, res: Response) 
     */
 
     const { body } = req;
-    const vote = await votesController.create_update(body);
+    const vote = await voteServices.create_update(body);
     return res.status(StatusCodes.CREATED).json(vote);
 });
 
@@ -145,7 +145,7 @@ votePostRouter.get('/votes', authenticate, async (req: Request, res: Response) =
         postId: postIdNumber,
     };
 
-    const vote = await votesController.findOne(searchData);
+    const vote = await voteServices.findOne(searchData);
     return res.status(StatusCodes.OK).json(vote);
 });
 
@@ -202,7 +202,7 @@ votePostRouter.patch('/votes', authenticate, validate(userVoteRequestSchema),asy
     */
 
     const { body } = req;
-    const vote = await votesController.create_update(body);
+    const vote = await voteServices.create_update(body);
     return res.status(StatusCodes.OK).json(vote);
 });
 
@@ -277,7 +277,7 @@ votePostRouter.delete('/votes', authenticate, async (req: Request, res: Response
         postId: postIdNumber,
     };
 
-    const vote = await votesController.remove(searchData);
+    const vote = await voteServices.remove(searchData);
     return res.status(StatusCodes.OK).json(vote);
 });
 

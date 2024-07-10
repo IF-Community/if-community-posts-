@@ -4,25 +4,25 @@ import { Post } from '../../database/entity/posts';
 import { PostCategory } from '../../database/entity/posts_categories';
 import { ApiError } from '../../helpers/api-error';
 import PostRequest from './types/post';
-import UsersController from '../users/users.controller';
+import UsersServices from '../users/users.services';
 import { Category } from '../../database/entity/categories';
 import { User } from '../../database/entity/users';
-import { CategorieController } from '../categories/categories.controllers';
+import { CategorieServices } from '../categories/categories.services';
 
 
-export class PostController {
+export class PostServices {
     private postRepository = AppDataSource.getRepository(Post);
     private postCategoryRepository = AppDataSource.getRepository(PostCategory);
-    private userController = new UsersController();
-    private categoryController = new CategorieController();
+    private usersServices = new UsersServices();
+    private categorieServices = new CategorieServices();
 
     async create(postData: PostRequest): Promise<Post> {
-        await this.userController.findOne(postData.userId);
+        await this.usersServices.findOne(postData.userId);
 
         const newPost = await this.postRepository.save(postData);
 
         if(postData.categories){
-            this.categoryController.createPostCategory(
+            this.categorieServices.createPostCategory(
                 newPost.id,
                 postData.categories
             );
@@ -145,7 +145,7 @@ export class PostController {
             })),
         }));
 
-        const user = await this.userController.findOne(id); 
+        const user = await this.usersServices.findOne(id); 
 
         const totalPages = Math.ceil(totalCount / pageSize);
         return { user: user ,totalPages, posts: mappedPosts }
@@ -262,7 +262,7 @@ export class PostController {
         post.content = content ?? post.content;
 
         if(postData.categories){
-            this.categoryController.createPostCategory(
+            this.categorieServices.createPostCategory(
                 post.id,
                 postData.categories
             );

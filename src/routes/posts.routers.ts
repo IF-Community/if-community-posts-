@@ -1,13 +1,13 @@
 import { Router, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { PostController } from '../controllers/posts/posts.controller';
+import { PostServices } from '../services/posts/posts.services';
 import validate from '../middlewares/validation/validationMiddleware';
 import { postRequestSchema, tagsSchema } from '../schemas';
 import authenticate from '../middlewares/authenticate/authenticate';
 import { ApiError } from '../helpers/api-error';
 
 const postRouter = Router();
-const postController = new PostController();
+const postServices = new PostServices();
 
 postRouter.post('/posts', authenticate, validate(postRequestSchema),async (req: Request, res: Response) => {
     /*
@@ -82,7 +82,7 @@ postRouter.post('/posts', authenticate, validate(postRequestSchema),async (req: 
     */
 
     const { body } = req;
-    const newPost = await postController.create(body);
+    const newPost = await postServices.create(body);
     return res.status(StatusCodes.CREATED).json(newPost);
 });
 
@@ -165,7 +165,7 @@ postRouter.get('/posts', authenticate, async (req: Request, res: Response) => {
     const pageSize = Number(req.query.pageSize as string) || 10;
     const popularity = req.query.popularity === 'true';
 
-    const posts = await postController.find(pageNumber, pageSize, popularity);
+    const posts = await postServices.find(pageNumber, pageSize, popularity);
     return res.status(StatusCodes.OK).json(posts);
 });
 
@@ -260,7 +260,7 @@ postRouter.get('/posts/categories', authenticate,async (req: Request, res: Respo
 
     const tags = typeof req.query.tags === 'string' ? req.query.tags.split(',') : [];
 
-    const posts = await postController.findByCategories(tags, pageNumber, pageSize);
+    const posts = await postServices.findByCategories(tags, pageNumber, pageSize);
     return res.status(StatusCodes.OK).json(posts);
 });
 
@@ -333,7 +333,7 @@ postRouter.get('/posts/:id', authenticate, async (req: Request, res: Response) =
     */
 
     const { id } = req.params;
-    const posts = await postController.findOne(+id);
+    const posts = await postServices.findOne(+id);
     return res.status(StatusCodes.OK).json(posts);
 });
 
@@ -421,7 +421,7 @@ postRouter.get('/posts/users/:id', authenticate, async (req: Request, res: Respo
 
     const { id } = req.params;
 
-    const posts = await postController.findByUser(+id, pageNumber, pageSize);
+    const posts = await postServices.findByUser(+id, pageNumber, pageSize);
     return res.status(StatusCodes.OK).json(posts);
 });
 
@@ -510,7 +510,7 @@ postRouter.get('/posts/search/:search', authenticate, async (req: Request, res: 
 
     const { search } = req.params;
 
-    const posts = await postController.findByQuery(search, pageNumber, pageSize);
+    const posts = await postServices.findByQuery(search, pageNumber, pageSize);
     return res.status(StatusCodes.OK).json(posts);
 });
 
@@ -586,7 +586,7 @@ postRouter.patch('/posts/:id', authenticate, validate(postRequestSchema), async 
 
     const { id } = req.params;
     const { body } = req;
-    const  post = await postController.update(+id, body);
+    const  post = await postServices.update(+id, body);
     return res.status(StatusCodes.OK).json(post);
 });
 
@@ -632,7 +632,7 @@ postRouter.delete('/posts/:id', authenticate, async (req: Request, res: Response
 
     */
     const { id } = req?.params;
-    const post = await postController.remove(+id);
+    const post = await postServices.remove(+id);
     return res.status(StatusCodes.OK).json(post);
 });
 

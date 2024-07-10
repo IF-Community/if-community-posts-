@@ -6,7 +6,7 @@ import { categoryRequest } from "./types/category";
 import { PostCategory } from "../../database/entity/posts_categories";
 
 
-export class CategorieController {
+export class CategorieServices {
     private categoryRepository = AppDataSource.getRepository(Category);
     private categoryPostRepository = AppDataSource.getRepository(PostCategory);
 

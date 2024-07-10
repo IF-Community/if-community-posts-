@@ -4,7 +4,7 @@ import { User } from "../../database/entity/users";
 import { ApiError } from "../../helpers/api-error";
 import { RequestUser } from "./types/user.types";
 
-class UsersController {
+class UsersServices {
     private userRepository = AppDataSource.getRepository(User);
 
     async create(userData: RequestUser): Promise<User | void> {
@@ -76,4 +76,4 @@ class UsersController {
     }
 }
 
-export default UsersController;
+export default UsersServices;
